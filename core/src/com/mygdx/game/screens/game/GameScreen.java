@@ -41,6 +41,16 @@ public class GameScreen implements Screen {
     }
 
     @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+        gameRenderer.dispose();
+    }
+
+    @Override
     public void pause() {
 
     }
@@ -48,15 +58,5 @@ public class GameScreen implements Screen {
     @Override
     public void resume() {
 
-    }
-
-    @Override
-    public void hide() {
-        log.debug("show");
-    }
-
-    @Override
-    public void dispose() {
-        gameRenderer.dispose();
     }
 }

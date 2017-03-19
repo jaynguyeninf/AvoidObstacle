@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
+import com.mygdx.game.common.GameManager;
 import com.mygdx.game.configurations.GameConfig;
 import com.mygdx.game.configurations.LevelDifficulty;
 import com.mygdx.game.entities.Background;
@@ -57,22 +58,23 @@ public class GameController{
         };
 
     public  void update(float delta){
-//        if(isGameOver()){
-//            log.debug("Game is Over!");
-//            return;
-//        }
+        if(isGameOver()){
+            log.debug("Game is Over!");
+            return;
+        }
 
         updatePlayer();
         updateObstacles(delta);
         if(isPlayerCollidingWithObstacle()){
             lives--;
 
-            //check if game is over, if not, it will restart.
-//            if(isGameOver()){
-//                log.debug("Game is Over!");
-//            } else {
-//                restart();
-//            }
+//      check if game is over, if not, it will restart.
+            if(isGameOver()){
+                log.debug("Game is Over!");
+                GameManager.INSTANCE.updateHighScore(score);
+            } else {
+                restart();
+            }
 
         }
         updateScore();
@@ -155,15 +157,6 @@ public class GameController{
             }
         }
     }
-
-//    private void updateScore(){
-//        for(Obstacle obstacle : obstacles){
-//            if(obstacle.getY() < player.getY() && !obstacle.getCollected()){
-//                score++;
-//                obstacle.setCollected();
-//            }
-//        }
-//    }
 
     private void updateScore(){
         for(Obstacle obstacle : obstacles){

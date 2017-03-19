@@ -20,12 +20,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.AvoidObstacleGame;
 import com.mygdx.game.assets.AssetDescriptors;
 import com.mygdx.game.assets.AssetPaths;
+import com.mygdx.game.common.GameManager;
 import com.mygdx.game.configurations.GameConfig;
 import com.mygdx.game.utilities.MyUtility;
 
-/**
- * Created by Vu on 3/10/2017.
- */
+
 
 public class HighScoreScreen extends ScreenAdapter {
     private static final Logger log = new Logger(HighScoreScreen.class.getName(), Logger.DEBUG);
@@ -63,6 +62,7 @@ public class HighScoreScreen extends ScreenAdapter {
         TextureRegion backRegion = uiAtlas.findRegion(AssetPaths.BACK);
         TextureRegion backPressedRegion = uiAtlas.findRegion(AssetPaths.BACK_PRESSED);
 
+        //Label.LabelStyle basically word wrapper
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
 
         //background
@@ -72,7 +72,8 @@ public class HighScoreScreen extends ScreenAdapter {
         Label highScoreText = new Label("HIGHSCORE", labelStyle);
 
         //highscore label
-        Label highScoreLabel = new Label("100", labelStyle);
+        String highScoreString = GameManager.INSTANCE.getHighScoreString();
+        Label highScoreLabel = new Label(highScoreString , labelStyle);
 
         //back button
         ImageButton backButton = new ImageButton(new TextureRegionDrawable(backRegion), new TextureRegionDrawable(backPressedRegion));

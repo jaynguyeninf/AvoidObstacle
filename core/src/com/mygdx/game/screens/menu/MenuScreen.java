@@ -21,9 +21,6 @@ import com.mygdx.game.configurations.GameConfig;
 import com.mygdx.game.screens.game.GameScreen;
 import com.mygdx.game.utilities.MyUtility;
 
-/**
- * Created by Vu on 3/8/2017.
- */
 
 public class MenuScreen extends ScreenAdapter {
     private static final Logger log = new Logger(MenuScreen.class.getName(), Logger.DEBUG);
@@ -68,6 +65,9 @@ public class MenuScreen extends ScreenAdapter {
                 play();
             }
         });
+
+
+
 
         //high score button
         ImageButton highScoreButton = createButton(uiAtlas, AssetPaths.HIGH_SCORE, AssetPaths.HIGH_SCORE_PRESSED);

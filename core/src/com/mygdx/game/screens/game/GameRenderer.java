@@ -72,7 +72,7 @@ public class GameRenderer implements Disposable {
         //instantiate debugCameraController
         debugCameraController = new DebugCameraController();
         //if not set, the camera centers the x and y axis, because Vector2 has 0,0 default even though we have center the viewport.
-        debugCameraController.setStartPosition(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_y);
+        debugCameraController.setStartPosition(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y);
 
 
     }
