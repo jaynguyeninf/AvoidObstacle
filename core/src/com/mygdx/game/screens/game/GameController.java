@@ -27,7 +27,6 @@ public class GameController{
 
     private int lives = GameConfig.LIVES_AT_START;
     private int score;
-    private LevelDifficulty levelDifficulty = LevelDifficulty.HARD;
 
     private Pool<Obstacle> obstaclePool;
 
@@ -72,6 +71,7 @@ public class GameController{
             if(isGameOver()){
                 log.debug("Game is Over!");
                 GameManager.INSTANCE.updateHighScore(score);
+
             } else {
                 restart();
             }
@@ -137,6 +137,7 @@ public class GameController{
 
 //            Obstacle obstacle = new Obstacle();
             Obstacle obstacle = obstaclePool.obtain(); //instead of creating new ones, we obtain from pool
+            LevelDifficulty levelDifficulty = GameManager.INSTANCE.getLevelDifficulty();
             obstacle.setYSpeed(levelDifficulty.getObstacleSpeed());
             obstacle.setPosition(obstacleX, obstacleY);
 

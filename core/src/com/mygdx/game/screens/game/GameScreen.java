@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Logger;
 import com.mygdx.game.AvoidObstacleGame;
+import com.mygdx.game.screens.menu.MenuScreen;
 
 /**
  * Created by Vu on 2/6/2017.
@@ -33,6 +34,11 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         gameController.update(delta);
         gameRenderer.render(delta);
+
+        //if check in update() in game controller, game will crash since gameRenderer still be called
+        if(gameController.isGameOver()){
+            game.setScreen(new MenuScreen(game));
+        }
     }
 
     @Override

@@ -17,4 +17,17 @@ public enum LevelDifficulty {
     public float getObstacleSpeed() {
         return obstacleSpeed;
     }
+
+    //return true if current difficulty is easy ||medium || hard
+    public boolean isEasy(){
+        return this == EASY;
+    }
+
+    public boolean isMedium(){
+        return this == MEDIUM;
+    }
+
+    public boolean isHard(){
+        return this == HARD;
+    }
 }
