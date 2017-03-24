@@ -3,7 +3,7 @@ package com.mygdx.game.common;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.mygdx.game.AvoidObstacleGame;
-import com.mygdx.game.configurations.LevelDifficulty;
+import com.mygdx.game.configurations.DifficultyLevel;
 
 /**
  * Created by Jay Nguyen on 3/17/2017.
@@ -21,14 +21,14 @@ public class GameManager {
     private Preferences prefs; //simple way to store data
     private int highScore;
 
-    private LevelDifficulty levelDifficulty = LevelDifficulty.MEDIUM;
+    private DifficultyLevel difficultyLevel = DifficultyLevel.MEDIUM;
 
 
     private GameManager() {
         prefs = Gdx.app.getPreferences(AvoidObstacleGame.class.getSimpleName()); //get name for the xml file
         highScore = prefs.getInteger(HIGH_SCORE_KEY, 0);                        // String key, default value
-        String difficultyName = prefs.getString(DIFFICULTY_KEY, LevelDifficulty.MEDIUM.name());
-        levelDifficulty = levelDifficulty.valueOf(difficultyName);
+        String difficultyName = prefs.getString(DIFFICULTY_KEY, DifficultyLevel.MEDIUM.name());
+        difficultyLevel = difficultyLevel.valueOf(difficultyName);
     }
 
     public void updateHighScore(int score) {
@@ -48,17 +48,17 @@ public class GameManager {
         return String.valueOf(highScore); //convert int to String
     }
 
-    public LevelDifficulty getLevelDifficulty() {
-        return levelDifficulty;
+    public DifficultyLevel getDifficultyLevel() {
+        return difficultyLevel;
     }
 
-    public void updateDifficulty(LevelDifficulty newLevelDifficulty) {
-        if(levelDifficulty == newLevelDifficulty){
+    public void updateDifficulty(DifficultyLevel newDifficultyLevel) {
+        if(difficultyLevel == newDifficultyLevel){
             return;
         }
 
-        levelDifficulty = newLevelDifficulty;
-        prefs.putString(DIFFICULTY_KEY, levelDifficulty.name());
+        difficultyLevel = newDifficultyLevel;
+        prefs.putString(DIFFICULTY_KEY, difficultyLevel.name());
         prefs.flush();
     }
 }

@@ -1,64 +1,44 @@
 package com.mygdx.game.screens.menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Logger;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.AvoidObstacleGame;
 import com.mygdx.game.assets.AssetDescriptors;
 import com.mygdx.game.assets.AssetPaths;
-import com.mygdx.game.configurations.GameConfig;
 import com.mygdx.game.screens.game.GameScreen;
-import com.mygdx.game.utilities.MyUtility;
 
 
-public class MenuScreen extends ScreenAdapter {
+public class MenuScreen extends MenuScreenBase {
     private static final Logger log = new Logger(MenuScreen.class.getName(), Logger.DEBUG);
 
-    private AvoidObstacleGame game;
-    private AssetManager assetManager;
-    private Stage stage;
-    private Viewport viewport;
+
 
     public MenuScreen(AvoidObstacleGame game) {
-        this.game = game;
-        assetManager = game.getAssetManager();
+        super(game);
     }
+
 
     @Override
-
-    public void show() {
-        viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
-        stage = new Stage(viewport, game.getBatch());
-
-        Gdx.input.setInputProcessor(stage);
-
-        initUI();
-    }
-
-    private void initUI() {
+    protected Actor createUI() {
         Table table = new Table();
 
         TextureAtlas gameplayAtlas = assetManager.get(AssetDescriptors.GAMEPLAY_ATLAS);
-        TextureAtlas uiAtlas = assetManager.get(AssetDescriptors.UI_ATLAS);
+        Skin uiskin = assetManager.get(AssetDescriptors.UI_SKIN);
 
         TextureRegion backgroundRegion = gameplayAtlas.findRegion(AssetPaths.BACKGROUND_REGION);
-        TextureRegion panelRegion = uiAtlas.findRegion(AssetPaths.PANEL);
 
         table.setBackground(new TextureRegionDrawable(backgroundRegion));
 
         //play button
-        ImageButton playButton = createButton(uiAtlas, AssetPaths.PLAY, AssetPaths.PLAY_PRESSED);
+        TextButton playButton = new TextButton("PLAY", uiskin);
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -70,7 +50,7 @@ public class MenuScreen extends ScreenAdapter {
 
 
         //high score button
-        ImageButton highScoreButton = createButton(uiAtlas, AssetPaths.HIGH_SCORE, AssetPaths.HIGH_SCORE_PRESSED);
+        TextButton highScoreButton = new TextButton("High Score", uiskin);
         highScoreButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -79,7 +59,7 @@ public class MenuScreen extends ScreenAdapter {
         });
 
         //options button
-        ImageButton optionButton = createButton(uiAtlas, AssetPaths.OPTIONS, AssetPaths.OPTIONS_PRESSED);
+        TextButton optionButton = new TextButton("Options", uiskin);
         optionButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -87,18 +67,26 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-
         //quit button
+        TextButton quitButton = new TextButton("QUIT", uiskin);
+        quitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                quit();
+            }
+
+        });
 
 
         //setup table
-        Table buttonTable = new Table();
+        Table buttonTable = new Table(uiskin);
         buttonTable.defaults().pad(20);
-        buttonTable.setBackground(new TextureRegionDrawable(panelRegion));
+        buttonTable.setBackground(AssetPaths.PANEL);
 
         buttonTable.add(playButton).row();
         buttonTable.add(highScoreButton).row();
         buttonTable.add(optionButton).row();
+        buttonTable.add(quitButton);
 
         buttonTable.center();
 
@@ -106,16 +94,9 @@ public class MenuScreen extends ScreenAdapter {
         table.center();
         table.setFillParent(true);
         table.pack();
-        stage.addActor(table);
+        return table;
     }
 
-    //create ImageButton
-    private static ImageButton createButton(TextureAtlas atlas, String upRegionName, String downRegionName){
-        TextureRegion upRegion = atlas.findRegion(upRegionName);
-        TextureRegion downRegion = atlas.findRegion(downRegionName);
-
-        return new ImageButton(new TextureRegionDrawable(upRegion), new TextureRegionDrawable(downRegion));
-    }
 
     private void play(){
         log.debug("play()");
@@ -132,27 +113,9 @@ public class MenuScreen extends ScreenAdapter {
         game.setScreen(new OptionsScreen(game));
     }
 
-
-    @Override
-    public void render(float delta) {
-        MyUtility.clearScreen();
-
-        stage.act();
-        stage.draw();
+    private void quit(){
+        log.debug("quit()");
+        Gdx.app.exit();
     }
 
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height, true);
-    }
-
-    @Override
-    public void hide() {
-        dispose();
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
-    }
 }

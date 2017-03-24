@@ -10,8 +10,10 @@ public class AssetPaths {
     //atlases
     public static final String GAMEPLAY_ATLAS = "gameplay/gameplay.atlas";
     public static final String UI_ATLAS = "ui/ui.atlas";
+    public static final String UI_SKIN = "ui/uiskin.json";
 
     //regions
+
     //gameplay
     public static final String PLAYER_REGION = "player";
     public static final String OBSTACLE_REGION = "obstacle";

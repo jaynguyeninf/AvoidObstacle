@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.mygdx.game.common.GameManager;
 import com.mygdx.game.configurations.GameConfig;
-import com.mygdx.game.configurations.LevelDifficulty;
+import com.mygdx.game.configurations.DifficultyLevel;
 import com.mygdx.game.entities.Background;
 import com.mygdx.game.entities.Obstacle;
 import com.mygdx.game.entities.Player;
@@ -137,8 +137,8 @@ public class GameController{
 
 //            Obstacle obstacle = new Obstacle();
             Obstacle obstacle = obstaclePool.obtain(); //instead of creating new ones, we obtain from pool
-            LevelDifficulty levelDifficulty = GameManager.INSTANCE.getLevelDifficulty();
-            obstacle.setYSpeed(levelDifficulty.getObstacleSpeed());
+            DifficultyLevel difficultyLevel = GameManager.INSTANCE.getDifficultyLevel();
+            obstacle.setYSpeed(difficultyLevel.getObstacleSpeed());
             obstacle.setPosition(obstacleX, obstacleY);
 
             obstacles.add(obstacle);
