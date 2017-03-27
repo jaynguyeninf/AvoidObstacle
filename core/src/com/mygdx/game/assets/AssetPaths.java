@@ -9,10 +9,10 @@ public class AssetPaths {
 
     //atlases
     public static final String GAMEPLAY_ATLAS = "gameplay/gameplay.atlas";
-    public static final String UI_ATLAS = "ui/ui.atlas";
+
     public static final String UI_SKIN = "ui/uiskin.json";
 
-    //regions
+    //==================== regions ==============
 
     //gameplay
     public static final String PLAYER_REGION = "player";
@@ -32,6 +32,9 @@ public class AssetPaths {
     public static final String PANEL = "panel";
     public static final String PLAY = "play";
     public static final String PLAY_PRESSED = "playPressed";
+
+    //================== sounds =================
+    public static final String HIT_SOUND = "sounds/hit.wav";
 
     private AssetPaths(){}
 }

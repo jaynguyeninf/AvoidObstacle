@@ -62,7 +62,9 @@
       "checkboxOn": "check-on",
       "checkboxOff": "check-off",
       "font": "default-font",
-      "fontColor": "white"
+      "fontColor": "white",
+      "overFontColor": "red",
+      "downFontColor": "green"
     }
   }
 

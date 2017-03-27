@@ -3,23 +3,28 @@ package com.mygdx.game.screens.menu;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Logger;
 import com.mygdx.game.AvoidObstacleGame;
 import com.mygdx.game.assets.AssetDescriptors;
+import com.mygdx.game.assets.AssetPaths;
+import com.mygdx.game.common.GameManager;
+import com.mygdx.game.configurations.DifficultyLevel;
 
-/**
- * Created by Jay Nguyen on 3/20/2017.
- */
 
 public class OptionsScreen extends MenuScreenBase {
 
     private static final Logger log = new Logger(OptionsScreen.class.getName(), Logger.DEBUG);
+    private ButtonGroup<CheckBox> checkBoxButtonGroup;
+    private CheckBox easyCheckBox, mediumCheckBox, hardCheckBox;
 
-    private Image checkMarkImage;
 
     public OptionsScreen(AvoidObstacleGame game) {
         super(game);
@@ -31,20 +36,85 @@ public class OptionsScreen extends MenuScreenBase {
         table.defaults().pad(15);
 
         TextureAtlas gamePlayAtlas = assetManager.get(AssetDescriptors.GAMEPLAY_ATLAS);
+        Skin uiSkin = assetManager.get(AssetDescriptors.UI_SKIN);
+
+        TextureRegion backgroundRegion = gamePlayAtlas.findRegion(AssetPaths.BACKGROUND_REGION);
+        table.setBackground(new TextureRegionDrawable(backgroundRegion));
+
+        Label label = new Label("DIFFICULTY", uiSkin);
+
+        easyCheckBox = createCheckBox(DifficultyLevel.EASY.name(), uiSkin); //name() belongs to enum
+        mediumCheckBox = createCheckBox(DifficultyLevel.MEDIUM.name(), uiSkin);
+        hardCheckBox = createCheckBox(DifficultyLevel.HARD.name(), uiSkin);
+
+        checkBoxButtonGroup = new ButtonGroup<CheckBox>(easyCheckBox, mediumCheckBox, hardCheckBox);
+        DifficultyLevel difficultyLevel = GameManager.INSTANCE.getDifficultyLevel();
+
+        checkBoxButtonGroup.setChecked(difficultyLevel.name()); //set button with specified text to checked
+
+        TextButton backButton = new TextButton("BACK", uiSkin);
+        backButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                back();
+            }
+        });
+
+        ChangeListener changeListener = new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                difficultyChanged();
+            }
+        };
+
+        easyCheckBox.addListener(changeListener);
+        mediumCheckBox.addListener(changeListener);
+        hardCheckBox.addListener(changeListener);
+
+        Table contentTable = new Table(uiSkin);
+        contentTable.defaults().pad(10);
+        contentTable.setBackground(AssetPaths.PANEL);
+
+        contentTable.add(label).row();
+        contentTable.add(easyCheckBox).row();
+        contentTable.add(mediumCheckBox).row();
+        contentTable.add(hardCheckBox).row();
+        contentTable.add(backButton);
+
+        table.add(contentTable);
+        table.center();
+        table.setFillParent(true);
+        table.pack();
 
         return table;
-
-    }
-
-    private ImageButton createButton(TextureAtlas atlas, String regionName) {
-        TextureRegion region = atlas.findRegion(regionName);
-        return new ImageButton(new TextureRegionDrawable(region));
     }
 
 
     private void back() {
         log.debug("back()");
         game.setScreen(new MenuScreen(game));
+    }
+
+
+    //Change gameplay's difficulty
+    private void difficultyChanged() {
+        log.debug("difficultyChanged()");
+        CheckBox checked = checkBoxButtonGroup.getChecked(); //get checked button from ButtonGroup
+
+        if (checked == easyCheckBox) {
+            GameManager.INSTANCE.updateDifficulty(DifficultyLevel.EASY);
+        } else if (checked == mediumCheckBox) {
+            GameManager.INSTANCE.updateDifficulty(DifficultyLevel.MEDIUM);
+        } else if (checked == hardCheckBox){
+            GameManager.INSTANCE.updateDifficulty(DifficultyLevel.HARD);
+        }
+    }
+
+    private static CheckBox createCheckBox(String text, Skin skin){
+        CheckBox createCheckBox = new CheckBox(text,skin);
+        createCheckBox.left().pad(8);
+        createCheckBox.getLabelCell().pad(8);
+        return createCheckBox;
     }
 
 }
