@@ -6,6 +6,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -35,6 +39,9 @@ public class LoadingScreen extends ScreenAdapter {
     private final AvoidObstacleGame game;
     private final AssetManager assetManager;
 
+
+    private Stage stage;
+
     //constructor
     public LoadingScreen(AvoidObstacleGame game) {
         this.game = game;
@@ -43,20 +50,36 @@ public class LoadingScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        log.debug("show");
         camera = new OrthographicCamera();
         viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT, camera);
         shapeRenderer = new ShapeRenderer();
 
+        stage = new Stage(viewport);
+
         //load assets
+        assetManager.load(AssetDescriptors.UI_SKIN);
+        assetManager.finishLoading();
+
+
+        Skin skin = assetManager.get(AssetDescriptors.UI_SKIN);
+        Label label  = new Label("Loading Screen", skin);
+        Table table = new Table();
+        table.add(label).bottom();
+        table.pack();
+        stage.addActor(table);
+
+
         assetManager.load(AssetDescriptors.FONT);
         assetManager.load(AssetDescriptors.GAMEPLAY_ATLAS);
-        assetManager.load(AssetDescriptors.UI_SKIN);
         assetManager.load(AssetDescriptors.HIT_SOUND);
+
     }
 
     @Override
     public void render(float delta) {
+        waitMilliseconds(400);
+
+
         update(delta);
 
         Gdx.gl20.glClearColor(0,0,0,1);
@@ -69,6 +92,8 @@ public class LoadingScreen extends ScreenAdapter {
         draw();
         shapeRenderer.end();
 
+        stage.act();
+        stage.draw();
 
         //call last to dispose LoadingScreen
         if(changeScreen){

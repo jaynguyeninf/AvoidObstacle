@@ -95,7 +95,6 @@ public class OptionsScreen extends MenuScreenBase {
         game.setScreen(new MenuScreen(game));
     }
 
-
     //Change gameplay's difficulty
     private void difficultyChanged() {
         log.debug("difficultyChanged()");
