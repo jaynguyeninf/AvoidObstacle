@@ -77,8 +77,6 @@ public class LoadingScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        waitMilliseconds(400);
-
 
         update(delta);
 

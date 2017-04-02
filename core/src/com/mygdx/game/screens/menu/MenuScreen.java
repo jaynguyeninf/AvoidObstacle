@@ -47,8 +47,6 @@ public class MenuScreen extends MenuScreenBase {
         });
 
 
-
-
         //high score button
         TextButton highScoreButton = new TextButton("High Score", uiskin);
         highScoreButton.addListener(new ChangeListener() {
@@ -76,7 +74,6 @@ public class MenuScreen extends MenuScreenBase {
             }
 
         });
-
 
         //setup table
         Table buttonTable = new Table(uiskin);
