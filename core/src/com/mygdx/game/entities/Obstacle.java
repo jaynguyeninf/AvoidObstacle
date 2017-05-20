@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Pool;
-import com.mygdx.game.configurations.GameConfig;
+import com.mygdx.game.entities.configurations.GameConfig;
 
 public class Obstacle extends GameObjectBase implements Pool.Poolable {
 

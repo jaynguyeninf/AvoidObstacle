@@ -1,6 +1,6 @@
 package com.mygdx.game.entities;
 
-import com.mygdx.game.configurations.GameConfig;
+import com.mygdx.game.entities.configurations.GameConfig;
 
 
 /**
